@@ -9,8 +9,8 @@ interface Post {
     slug: string;
 }
 
-export function loadPosts() {
-    const postsDirectory = join(process.cwd(), 'posts/');
+export function _loadPosts() {
+    const postsDirectory = join(process.cwd(), '/static/blog_posts/');
     const posts: Post[] = [];
 
     try {
@@ -51,11 +51,11 @@ export function loadPosts() {
         console.error('Error reading posts directory:', error);
     }
 
-    console.log(posts);
+    // console.log(posts);
 
     return {
         posts
     };
 }
 
-export const load = loadPosts;
+export const load = _loadPosts;

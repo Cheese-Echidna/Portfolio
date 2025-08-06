@@ -9,9 +9,8 @@ I wanted to have something on the internet where people could find me, and now I
 
 I would like to check that a few things work:
 
-![(c) Pawel Czerwinski, Unsplash](photo-1609709725221-d3c6bdadc166.jpg)
+<img alt="(c) Pawel Czerwinski, Unsplash" src="photo-1609709725221-d3c6bdadc166.jpg" width="550px"/>
 
-$\frac{1}{\infty} \approx 0$
 
 #### Things that I could publish:
 - Hex
