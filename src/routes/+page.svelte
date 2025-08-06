@@ -3,7 +3,5 @@
 
 </script>
 
-<br>
-Hi
-<br/>
-I'm Gabriel
+<p>Hi</p>
+<p>I'm Gabriel</p>
