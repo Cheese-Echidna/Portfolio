@@ -11,6 +11,8 @@
 </script>
 
 <svelte:head>
+    <link rel="stylesheet" href="/prism/prism.css">
+    <script src="/prism/prism.js"></script>
 </svelte:head>
 
 <nav>
@@ -30,9 +32,9 @@
 
 <style lang="css">
     .content {
-        margin-left: 10%;
-        margin-right: 10%;
-        width: 80%;
+        margin-left: 15%;
+        margin-right: 15%;
+        width: 70%;
         padding-top: 5rem;
     }
 
@@ -69,6 +71,9 @@
         color: var(--accent-1);
     }
 
+    :global(a) {
+        color: var(--accent-1);
+    }
 
     nav {
         position: fixed;
@@ -78,7 +83,7 @@
         display: flex;
         text-align: center;
         border-bottom: 2px solid var(--accent-white);
-        font-size: 3rem;
+        font-size: 2rem;
         z-index: 100;
         background-color: var(--bg);
         margin-bottom: 2px;

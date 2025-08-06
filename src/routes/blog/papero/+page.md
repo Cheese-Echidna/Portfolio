@@ -1,35 +1,87 @@
-### Hello!
+Papero is a generative art project. It started in js in 2021 and has since had many incarnations.
 
-I am very excited to welcome you to my new blog (and portfolio).
+The current incarnation can be found [here](https://github.com/Cheese-Echidna/papero).
 
-I wanted to have something on the internet where people could find me, and now I will.
+This blog post is going to cover some implementations and results from over the years, as well as discussing some of the algorithms that generate the images.
+
+## Spiral
+
+The original papero algorithm was conceived in 2021 and is now called *spiral*.
+Spiral works by walking through the image in a spiral, setting each pixel to the average of the filled pixels around it. 
+The image starts off with one pixel, and then the walk begins going clockwise around the starting pixel repeating until the entire image is filled in.
+This algorithm sounds boring, and it is, in this state the entire image would end up the same colour as the starting pixel. 
+However, if you just change the colour of the new pixel to be the average of the filled pixels around it, plus some slight randomness, the image becomes a chaotic and beautiful swirl of colour.
+
+The oldest render from spiral I can find is from August 2023, from a variation called Neo (you can see that by that point we had started making revisions). Here it is:
+
+<img alt="The oldest papero I can find" src="/blog_assets/papero/2023-08-21 14.11.20 Neo.png"/>
+
+The pseudocode for that algorithm looks like this:
+
+```rust
+fn generate() -> Image {
+    let mut image = Image::new();
+    
+    let (mut x, mut y) = random_pixel_near_middle();
+    
+    let initial_colour = random_colour();
+    
+    image.put_pixel(x, y, initial_colour);
+    
+    // This code moves 1, then 3, then 5, etc
+    // This facilitates a spiral that never hits itself.
+    for move_length in 1..(max(width, height) * 2).step_by(2) {
+        for _right in 0..move_length {
+            spiral_iteration(&mut image, (&mut x, &mut y), Direction::Right);
+        }
+        for _down in 0..move_length {
+            spiral_iteration(&mut image, (&mut x, &mut y), Direction::Down);
+        }
+        for _left in 0..(move_length + 1) {
+            spiral_iteration(&mut image, (&mut x, &mut y), Direction::Left);
+        }
+        for _up in 0..(move_length + 1) {
+            spiral_iteration(&mut image, (&mut x, &mut y), Direction::Up);
+        }
+    }
+
+    return image;
+}
+
+fn spiral_iteration(image: &mut Image, (x,y): (&mut u32, &mut u32), dir: Direction) {
+    (x, y) = (x, y) + dir.move_in_direction();
+    if !image.in_bounds(*x, *y) {
+        return;
+    }
+    let colour = avg_adjacent_filled(image, *x, *y);
+    image.set_pixel(*x, *y, colour);
+}
+
+```
+
+Here is a render of an implementation of the same algorithm from 2025. 
+
+<img alt="The newest papero I can find" src="/blog_assets/papero/Spiral.png"/>
+
+## Fractals
+
+One of the next interesting experiments was with fractals. I was originally very interested in Sierpinski's Triangle, originally coding it in python with Turtle. The performance of that algorithm was terrible, so I switched to doing it with pixels and doing the computation via Pascal's triangle (in case you didn't know, Pascal's triangle mod 2 is the same Sierpinski's triangle). 
+
+<img alt="Sierpiński's Triangle" src="/blog_assets/papero/Sierpiński's Triangle.png"/>
+
+Another famous fractal is the Mandelbrot set. I have spent hours tuning the functions that choose the colour for these visualisations.
+
+Here it is in closeup:
+
+<img alt="A closeup of the mandelbrot set" src="/blog_assets/papero/mandelcool.png"/>
+
+Here is the "inverted mandelbrot set" which can be found by mapping z_0 to 1/z_0. Credit to [Paul Bourke](https://paulbourke.net/fractals/mandelbrot/) for the idea.
+
+<img alt="The inverted mandelbrot set" src="/blog_assets/papero/Mandelbrot.png"/>
+
+Here is the Juila set:
+
+<img alt="Sierpiński's Triangle" src="/blog_assets/papero/Julia (Jazzmine).png"/>
 
 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lacus velit, consectetur vitae est quis, feugiat imperdiet dolor. Nunc in orci sollicitudin, sollicitudin lacus et, eleifend neque. Proin finibus erat a ipsum hendrerit tempor in quis erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel pulvinar sapien, vitae ullamcorper justo. Nam ligula dolor, volutpat ac elementum ut, luctus at urna. Vestibulum semper ac erat ut sagittis. Phasellus velit purus, pretium ac viverra in, suscipit nec urna. Nam mattis mauris vitae tempus porttitor. Suspendisse tempor mauris quis orci suscipit, id porta sapien hendrerit. Ut mauris dolor, viverra vel neque ut, dapibus iaculis nulla. Aenean cursus quam a nulla porta, vitae hendrerit leo aliquam. Phasellus convallis leo ut bibendum mattis. Praesent bibendum facilisis est, ac gravida est.
-
-Donec laoreet neque tempor nunc accumsan, vel finibus sapien maximus. Quisque eget metus ut ex congue tristique id in nulla. Mauris nisi metus, pretium eget metus ac, pretium egestas augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras placerat metus non diam fermentum eleifend. Curabitur efficitur maximus nibh quis ultrices. Cras pellentesque accumsan neque, eget tincidunt orci lacinia at. In sodales congue purus ac dictum. Integer id risus sed ligula cursus tempus. Phasellus vitae massa velit.
-
-Aenean et maximus dui. Ut fringilla quam quis finibus congue. Fusce quis aliquam enim. Ut a odio sem. Proin at sagittis est. Sed et commodo sem. Nam commodo tincidunt dapibus. In aliquet pellentesque libero. Sed ut scelerisque metus.
-
-Pellentesque convallis commodo convallis. Pellentesque iaculis sem id sagittis tristique. Ut id sagittis risus. Suspendisse vitae viverra urna. Vivamus ullamcorper nisl sem, id placerat orci laoreet eu. Aliquam nec lacinia massa, gravida hendrerit mi. Morbi id justo in leo vestibulum dictum. Vivamus lorem purus, interdum ac purus sit amet, imperdiet molestie libero. Fusce a urna diam. Morbi non finibus orci, sit amet varius nisi.
-
-Phasellus semper auctor felis in tempor. Quisque dictum rhoncus nulla, in pharetra risus. Ut venenatis lectus urna, ac blandit neque consectetur non. Proin sed posuere eros, vel blandit ipsum. Aliquam eget dictum dui. Nulla vitae ipsum sagittis, rutrum felis sed, pellentesque magna. Praesent imperdiet in mi at feugiat. Vestibulum ac lobortis tellus. Integer vitae purus leo. Vivamus egestas nec neque nec porttitor. Etiam finibus arcu eros, nec imperdiet turpis malesuada sit amet. Nullam in eros dui. Ut vitae viverra sapien, ut tristique lacus.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lacus velit, consectetur vitae est quis, feugiat imperdiet dolor. Nunc in orci sollicitudin, sollicitudin lacus et, eleifend neque. Proin finibus erat a ipsum hendrerit tempor in quis erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel pulvinar sapien, vitae ullamcorper justo. Nam ligula dolor, volutpat ac elementum ut, luctus at urna. Vestibulum semper ac erat ut sagittis. Phasellus velit purus, pretium ac viverra in, suscipit nec urna. Nam mattis mauris vitae tempus porttitor. Suspendisse tempor mauris quis orci suscipit, id porta sapien hendrerit. Ut mauris dolor, viverra vel neque ut, dapibus iaculis nulla. Aenean cursus quam a nulla porta, vitae hendrerit leo aliquam. Phasellus convallis leo ut bibendum mattis. Praesent bibendum facilisis est, ac gravida est.
-
-Donec laoreet neque tempor nunc accumsan, vel finibus sapien maximus. Quisque eget metus ut ex congue tristique id in nulla. Mauris nisi metus, pretium eget metus ac, pretium egestas augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras placerat metus non diam fermentum eleifend. Curabitur efficitur maximus nibh quis ultrices. Cras pellentesque accumsan neque, eget tincidunt orci lacinia at. In sodales congue purus ac dictum. Integer id risus sed ligula cursus tempus. Phasellus vitae massa velit.
-
-Aenean et maximus dui. Ut fringilla quam quis finibus congue. Fusce quis aliquam enim. Ut a odio sem. Proin at sagittis est. Sed et commodo sem. Nam commodo tincidunt dapibus. In aliquet pellentesque libero. Sed ut scelerisque metus.
-
-Pellentesque convallis commodo convallis. Pellentesque iaculis sem id sagittis tristique. Ut id sagittis risus. Suspendisse vitae viverra urna. Vivamus ullamcorper nisl sem, id placerat orci laoreet eu. Aliquam nec lacinia massa, gravida hendrerit mi. Morbi id justo in leo vestibulum dictum. Vivamus lorem purus, interdum ac purus sit amet, imperdiet molestie libero. Fusce a urna diam. Morbi non finibus orci, sit amet varius nisi.
-
-Phasellus semper auctor felis in tempor. Quisque dictum rhoncus nulla, in pharetra risus. Ut venenatis lectus urna, ac blandit neque consectetur non. Proin sed posuere eros, vel blandit ipsum. Aliquam eget dictum dui. Nulla vitae ipsum sagittis, rutrum felis sed, pellentesque magna. Praesent imperdiet in mi at feugiat. Vestibulum ac lobortis tellus. Integer vitae purus leo. Vivamus egestas nec neque nec porttitor. Etiam finibus arcu eros, nec imperdiet turpis malesuada sit amet. Nullam in eros dui. Ut vitae viverra sapien, ut tristique lacus.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lacus velit, consectetur vitae est quis, feugiat imperdiet dolor. Nunc in orci sollicitudin, sollicitudin lacus et, eleifend neque. Proin finibus erat a ipsum hendrerit tempor in quis erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel pulvinar sapien, vitae ullamcorper justo. Nam ligula dolor, volutpat ac elementum ut, luctus at urna. Vestibulum semper ac erat ut sagittis. Phasellus velit purus, pretium ac viverra in, suscipit nec urna. Nam mattis mauris vitae tempus porttitor. Suspendisse tempor mauris quis orci suscipit, id porta sapien hendrerit. Ut mauris dolor, viverra vel neque ut, dapibus iaculis nulla. Aenean cursus quam a nulla porta, vitae hendrerit leo aliquam. Phasellus convallis leo ut bibendum mattis. Praesent bibendum facilisis est, ac gravida est.
-
-Donec laoreet neque tempor nunc accumsan, vel finibus sapien maximus. Quisque eget metus ut ex congue tristique id in nulla. Mauris nisi metus, pretium eget metus ac, pretium egestas augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras placerat metus non diam fermentum eleifend. Curabitur efficitur maximus nibh quis ultrices. Cras pellentesque accumsan neque, eget tincidunt orci lacinia at. In sodales congue purus ac dictum. Integer id risus sed ligula cursus tempus. Phasellus vitae massa velit.
-
-Aenean et maximus dui. Ut fringilla quam quis finibus congue. Fusce quis aliquam enim. Ut a odio sem. Proin at sagittis est. Sed et commodo sem. Nam commodo tincidunt dapibus. In aliquet pellentesque libero. Sed ut scelerisque metus.
-
-Pellentesque convallis commodo convallis. Pellentesque iaculis sem id sagittis tristique. Ut id sagittis risus. Suspendisse vitae viverra urna. Vivamus ullamcorper nisl sem, id placerat orci laoreet eu. Aliquam nec lacinia massa, gravida hendrerit mi. Morbi id justo in leo vestibulum dictum. Vivamus lorem purus, interdum ac purus sit amet, imperdiet molestie libero. Fusce a urna diam. Morbi non finibus orci, sit amet varius nisi.
-
-Phasellus semper auctor felis in tempor. Quisque dictum rhoncus nulla, in pharetra risus. Ut venenatis lectus urna, ac blandit neque consectetur non. Proin sed posuere eros, vel blandit ipsum. Aliquam eget dictum dui. Nulla vitae ipsum sagittis, rutrum felis sed, pellentesque magna. Praesent imperdiet in mi at feugiat. Vestibulum ac lobortis tellus. Integer vitae purus leo. Vivamus egestas nec neque nec porttitor. Etiam finibus arcu eros, nec imperdiet turpis malesuada sit amet. Nullam in eros dui. Ut vitae viverra sapien, ut tristique lacus.
+## Bitwise Images
