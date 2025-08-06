@@ -26,6 +26,9 @@
         rel="stylesheet"
         href=" https://cdn.jsdelivr.net/npm/temml@0.11.6/dist/Temml-Local.min.css "
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <title>{title}</title>
 </svelte:head>
 
@@ -59,11 +62,19 @@
         --accent-white: #ebebeb;
         --text: var(--accent-white);
         background-color: var(--bg);
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-family: Nunito, sans-serif;
         font-size: 1.2rem;
-        font-feature-settings: "liga" 1;
         color: var(--text);
 	}
+
+    :global(h1, h2) {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    :global(code) {
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-feature-settings: "liga" 1;
+    }
 
     :global(button) {
         background-color: var(--bg);
@@ -72,20 +83,12 @@
         font-size: inherit;
         font-family: inherit;
         cursor: pointer;
-        /*border-radius: 20px;*/
+        border-radius: 5px;
         transition: box-shadow 0.3s ease, color 0.3s ease;
 
     }
 
-    :global(button:hover) {
-        color: var(--accent-1) !important;
-    }
-
-    :global(button.selected) {
-        color: var(--accent-1);
-    }
-
-    :global(a) {
+    :global(button:hover, button.selected, a) {
         color: var(--accent-1);
     }
 

@@ -1,6 +1,5 @@
 Projects todo:
 
-- [ ] Hex
 - [ ] Naughts and crosses
 - [ ] Sudoku
 - Generative Art

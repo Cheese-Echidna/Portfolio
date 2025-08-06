@@ -10,6 +10,7 @@
     <button onclick={() => window.location.href = `/blog/${post.slug}`}>
         {post.title} - {formatDateTime(post.date)} - {post.summary}
     </button>
+    <br>
 {/each}
 
 <style>

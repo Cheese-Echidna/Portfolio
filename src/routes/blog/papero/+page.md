@@ -111,7 +111,7 @@ Here's another made with the same process by with OR:
 And another made by squaring x and y and then XOR-ing them together, it's probably my favourite of the three:
 
 ```rust
-// x, y are already scaled
+// x, y are already scaled to the range [0, 2^24)
 fn sq_xor(x:u32, y:u32) -> Color {
     let c = x.pow(2).bitxor(y.pow(2));
     u32_to_colour(c as u32)

@@ -17,6 +17,7 @@
 <style lang="css">
     :global(img) {
         max-width: 70%;
+        max-height: 50vh;
         display: block;
         margin-left: auto;
         margin-right: auto;
