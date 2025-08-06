@@ -1,7 +1,7 @@
 export const posts = [
     {
         "title": "Blog Post No. 1",
-        "summary": "A test blog post, designed just to make sure this site is working.",
+        "summary": "A test blog post.",
         "date": 1754460955898,
         "author": "Gabriel Garriock",
         "slug": "first"

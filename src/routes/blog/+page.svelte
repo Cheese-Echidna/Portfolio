@@ -11,3 +11,9 @@
         {post.title} - {formatDateTime(post.date)} - {post.summary}
     </button>
 {/each}
+
+<style>
+    button {
+        text-align: left;
+    }
+</style>

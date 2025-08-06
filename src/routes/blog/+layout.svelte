@@ -8,9 +8,9 @@
 {#if data.current_post}
     <h1>{data.current_post.title}</h1>
     <p>{formatDateTime(data.current_post.date)}</p>
+    <hr>
 {/if}
 
-<hr>
 
 {@render children?.()}
 
