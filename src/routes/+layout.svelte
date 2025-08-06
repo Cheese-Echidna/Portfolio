@@ -13,6 +13,16 @@
 <svelte:head>
     <link rel="stylesheet" href="/prism/prism.css">
     <script src="/prism/prism.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+        integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+        crossorigin="anonymous"
+    />
+    <link
+        rel="stylesheet"
+        href=" https://cdn.jsdelivr.net/npm/temml@0.11.6/dist/Temml-Local.min.css "
+    />
 </svelte:head>
 
 <nav>
