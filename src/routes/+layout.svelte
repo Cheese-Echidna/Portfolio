@@ -3,11 +3,14 @@
 
     let { children } = $props();
 
-    let path_pre = page.url.pathname.split('/')[1];
+    const path_pre = page.url.pathname.split('/')[1];
 
-    let buttons = [['', "Home"], ['blog', "Blog"], ["projects", "Projects"], ["resume", "Resume"]].map(
+    const buttons = [['', "Home"], ['blog', "Blog"], ["projects", "Projects"], ["resume", "Resume"]].map(
         ([url, name]) => ({name, url: "\/" + url, selected: url === path_pre})
     );
+
+    const page_name = buttons.find((elem) => elem.selected)?.name;
+    const title = "Gabriel Garriock" + (page_name ? (" - " + page_name) : "");
 </script>
 
 <svelte:head>
@@ -23,6 +26,7 @@
         rel="stylesheet"
         href=" https://cdn.jsdelivr.net/npm/temml@0.11.6/dist/Temml-Local.min.css "
     />
+    <title>{title}</title>
 </svelte:head>
 
 <nav>
