@@ -22,6 +22,11 @@
         margin-left: auto;
         margin-right: auto;
     }
-
+    
+    @media (max-width: 768px) {
+        :global(img) {
+            max-width: 100%;
+        }
+    }
 
 </style>

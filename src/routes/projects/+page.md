@@ -18,3 +18,6 @@ fn main() -> Option<()> {
     println!("Hello blog");
 }
 ```
+
+
+Here is some `inline code` yay.

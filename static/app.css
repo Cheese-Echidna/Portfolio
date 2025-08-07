@@ -40,3 +40,11 @@ button {
 button:hover, button.selected, a {
     color: var(--accent-1);
 }
+
+@media (max-width: 768px) {
+    pre, code {
+        white-space: pre-wrap !important;
+        word-break: break-word;
+    }
+}
+

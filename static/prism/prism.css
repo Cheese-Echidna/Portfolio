@@ -21,7 +21,7 @@ pre[class*="language-"] {
 	line-height: 1.5;
 
 	-moz-tab-size: 4;
-	-o-tab-size: 4;
+	/*-o-tab-size: 4;*/
 	tab-size: 4;
 
 	-webkit-hyphens: none;
@@ -38,34 +38,35 @@ pre[class*="language-"] {
 }
 
 pre[class*="language-"],
-:not(pre) > code[class*="language-"] {
-	background: hsl(30, 20%, 25%);
+:not(pre) > code[class*="language-"], :not(pre) > code {
+	background: #303030;
 }
 
 /* Code blocks */
-pre[class*="language-"] {
+pre[class*="language-"], pre {
 	padding: 1em;
 	margin: .5em 0;
 	overflow: auto;
-	border: .3em solid hsl(30, 20%, 40%);
+	border: .2em solid var(--accent-1);
 	border-radius: .5em;
-	box-shadow: 1px 1px .5em black inset;
+	box-shadow: 0 0 .5em black inset;
 }
 
 /* Inline code */
-:not(pre) > code[class*="language-"] {
+:not(pre) > code[class*="language-"], :not(pre) > code {
 	padding: .15em .2em .05em;
 	border-radius: .3em;
-	border: .13em solid hsl(30, 20%, 40%);
+	border: .13em solid var(--accent-1);
 	box-shadow: 1px 1px .3em -.1em black inset;
 	white-space: normal;
+    font-size: 0.9rem;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: hsl(30, 20%, 50%);
+	color: hsl(32, 40%, 53%);
 }
 
 .token.punctuation {
