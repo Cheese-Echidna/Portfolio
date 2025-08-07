@@ -2,21 +2,29 @@
 	import {page} from "$app/state";
 
     let { children } = $props();
+
     let menuOpen = $state(false);
 
-    const path_pre = page.url.pathname.split('/')[1];
+    const path_pre = $derived(page.url.pathname.split('/')[1]);
 
-    const buttons = [['', "Home"], ['blog', "Blog"], ["projects", "Projects"], ["resume", "Resume"], ["contact", "Contact"]].map(
-        ([url, name]) => ({name, url: "\/" + url, selected: url === path_pre})
+    const buttons = $derived.by(() => [
+        ['', "Home"],
+        ['blog', "Blog"],
+        ["projects", "Projects"],
+        ["resume", "Resume"],
+        ["contact", "Contact"]
+    ].map(
+            ([url, name]) => ({name, url: "\/" + url, selected: url === path_pre})
+        )
     );
 
-    const page_button = buttons.find((elem) => elem.selected) || {
+    const page_button = $derived(buttons.find((elem) => elem.selected) || {
         name: "Unknown",
         url: "/",
         selected: true,
-    };
-    const page_name = page_button.name;
-    const title = "Gabriel Garriock" + (page_name ? (" - " + page_name) : "");
+    })
+    const page_name = $derived(page_button.name);
+    const title = $derived("Gabriel Garriock" + (page_name ? (" - " + page_name) : ""));
     
     function toggleMenu() {
         menuOpen = !menuOpen;
@@ -85,6 +93,7 @@
 </div>
 
 <style lang="css">
+
     .content {
         margin-left: 15%;
         margin-right: 15%;
@@ -164,7 +173,6 @@
         font-size: 1.5rem;
     }
 
-    /* Media queries for responsive design */
     @media (max-width: 768px) {
         .content {
             margin-left: 4%;
