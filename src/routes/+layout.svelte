@@ -5,7 +5,7 @@
 
     const path_pre = page.url.pathname.split('/')[1];
 
-    const buttons = [['', "Home"], ['blog', "Blog"], ["projects", "Projects"], ["resume", "Resume"]].map(
+    const buttons = [['', "Home"], ['blog', "Blog"], ["projects", "Projects"], ["resume", "Resume"], ["contact", "Contact"]].map(
         ([url, name]) => ({name, url: "\/" + url, selected: url === path_pre})
     );
 
@@ -14,6 +14,8 @@
 </script>
 
 <svelte:head>
+    <link rel="stylesheet" href="/app.css">
+    <link rel="stylesheet" href="/normalize.css">
     <link rel="stylesheet" href="/prism/prism.css">
     <script src="/prism/prism.js"></script>
     <link
@@ -52,44 +54,7 @@
         margin-left: 15%;
         margin-right: 15%;
         width: 70%;
-        padding-top: 5rem;
-    }
-
-	:global(:root) {
-		--accent-1: #fd9112;
-		--accent-2: #fd666e;
-        --bg: #141414;
-        --accent-white: #ebebeb;
-        --text: var(--accent-white);
-        background-color: var(--bg);
-        font-family: Nunito, sans-serif;
-        font-size: 1.2rem;
-        color: var(--text);
-	}
-
-    :global(h1, h2) {
-        font-family: 'Space Grotesk', sans-serif;
-    }
-
-    :global(code) {
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-feature-settings: "liga" 1;
-    }
-
-    :global(button) {
-        background-color: var(--bg);
-        color: var(--text);
-        border: none;
-        font-size: inherit;
-        font-family: inherit;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: box-shadow 0.3s ease, color 0.3s ease;
-
-    }
-
-    :global(button:hover, button.selected, a) {
-        color: var(--accent-1);
+        padding-top: 4rem;
     }
 
     nav {
