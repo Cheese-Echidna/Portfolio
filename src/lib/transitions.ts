@@ -2,30 +2,47 @@ export function typewriter(
     node: Element,
     { speed = 1 }: { speed?: number } = {}
 ) {
-    // allow any number of text nodes and <br> elements
-    const children = Array.from(node.childNodes);
-    const valid = children.length > 0 && children.every(
-        (n) =>
-            n.nodeType === Node.TEXT_NODE ||
-            (n.nodeType === Node.ELEMENT_NODE && (n as Element).tagName === 'BR')
-    );
-    if (!valid) {
-        throw new Error(
-            `This transition only works on elements whose children are text nodes or <br> elements`
-        );
+    // --- 1. Build a flat token list from the DOM, splitting text into chars ---
+    type Token =
+        | { type: 'open'; tagName: string; attrs: string; html: string }
+        | { type: 'close'; tagName: string; html: string }
+        | { type: 'br'; html: string }
+        | { type: 'char'; char: string };
+
+    const tokens: Token[] = [];
+
+    function walk(n: Node) {
+        if (n.nodeType === Node.TEXT_NODE) {
+            const text = n.textContent || '';
+            for (const ch of text) {
+                tokens.push({ type: 'char', char: ch });
+            }
+        } else if (
+            n.nodeType === Node.ELEMENT_NODE &&
+            (n as Element).tagName === 'BR'
+        ) {
+            tokens.push({ type: 'br', html: '<br>' });
+        } else if (n.nodeType === Node.ELEMENT_NODE) {
+            const el = n as Element;
+            const tag = el.tagName.toLowerCase();
+            // reconstruct attribute string
+            const attrs = Array.from(el.attributes)
+                .map(a => `${a.name}="${a.value}"`)
+                .join(' ');
+            const openHtml = `<${tag}${attrs ? ' ' + attrs : ''}>`;
+            const closeHtml = `</${tag}>`;
+
+            tokens.push({ type: 'open', tagName: tag, attrs, html: openHtml });
+            for (const c of Array.from(el.childNodes)) walk(c);
+            tokens.push({ type: 'close', tagName: tag, html: closeHtml });
+        }
     }
 
-    // build a flat list of segments: text segments and “br” markers
-    const segments: Array<{ type: 'text'; text: string } | { type: 'br' }> =
-        children.map((n) =>
-            n.nodeType === Node.TEXT_NODE
-                ? { type: 'text', text: n.textContent! }
-                : { type: 'br' }
-        );
+    Array.from(node.childNodes).forEach(n => walk(n));
 
-    // count total “characters” (treat each <br> as one)
-    const total = segments.reduce(
-        (sum, seg) => sum + (seg.type === 'text' ? seg.text.length : 1),
+    // --- 2. Determine total “units” (chars + <br>s) ---
+    const total = tokens.reduce(
+        (sum, t) => sum + (t.type === 'char' || t.type === 'br' ? 1 : 0),
         0
     );
 
@@ -34,25 +51,50 @@ export function typewriter(
     return {
         duration,
         tick: (t: number) => {
-            // how many “characters” to show
             let remaining = Math.trunc(total * t);
 
-            // rebuild contents
-            node.innerHTML = '';
-            for (const seg of segments) {
-                if (remaining <= 0) break;
+            const out: string[] = [];
+            const openStack: string[] = [];
 
-                if (seg.type === 'br') {
-                    if (remaining >= 1) {
-                        node.appendChild(document.createElement('br'));
-                        remaining -= 1;
+            for (const tok of tokens) {
+                if (tok.type === 'open') {
+                    out.push(tok.html);
+                    openStack.push(tok.tagName);
+                } else if (tok.type === 'close') {
+                    // only close if we have it open
+                    if (openStack[openStack.length - 1] === tok.tagName) {
+                        openStack.pop();
+                        out.push(tok.html);
                     }
-                } else {
-                    const slice = seg.text.slice(0, remaining);
-                    node.appendChild(document.createTextNode(slice));
-                    remaining -= slice.length;
+                } else if (tok.type === 'br') {
+                    if (remaining > 0) {
+                        out.push(tok.html);
+                        remaining -= 1;
+                    } else {
+                        break;
+                    }
+                } else if (tok.type === 'char') {
+                    if (remaining > 0) {
+                        // escape HTML chars
+                        const esc = tok.char
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;');
+                        out.push(esc);
+                        remaining -= 1;
+                    } else {
+                        break;
+                    }
                 }
             }
+
+            // close any still-open tags
+            while (openStack.length > 0) {
+                const tag = openStack.pop()!;
+                out.push(`</${tag}>`);
+            }
+
+            node.innerHTML = out.join('');
         }
     };
 }

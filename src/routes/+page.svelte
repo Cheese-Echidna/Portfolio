@@ -2,87 +2,59 @@
     import {typewriter} from "$lib/transitions";
     import {onMount} from "svelte";
 
-    let showScrollIndicator = $state(true);
+    // Set to false for typewriter effect
     let visible = $state(false);
-
-    function checkScroll() {
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollTop = window.scrollY;
-
-        showScrollIndicator = documentHeight > windowHeight && 
-            scrollTop < (documentHeight - windowHeight - 20);
-    }
-
-    $effect(() => {
-        if (typeof window !== 'undefined') {
-            window.addEventListener('scroll', checkScroll);
-            window.addEventListener('resize', checkScroll);
-            checkScroll();
-
-            return () => {
-                window.removeEventListener('scroll', checkScroll);
-                window.removeEventListener('resize', checkScroll);
-            };
-        }
-    });
 
     onMount(() => {visible = true;});
 </script>
 
-<div class="name">
+<div class="hello">
     {#if visible}
         <h1 in:typewriter={{ speed: 2 }}>
             Hi,
             <br>
-            I'm Gabriel.
+            I'm <span class="name">Gabriel</span>.
             <br>
-            Welcome to my website.
+            Welcome to
+            <br>
+            my website.
         </h1>
     {/if}
 </div>
 
-<!--{#if showScrollIndicator}-->
-<!--    <div class="scroll-indicator">V</div>-->
-<!--{/if}-->
-
 <style lang="css">
-    .scroll-indicator {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: var(--text);
-        font-size: 1.2rem;
-        opacity: 0.6;
-        animation: bounce 1s infinite;
-        pointer-events: none;
-    }
-
-    @keyframes bounce {
-        0%, 100% {
-            transform: translateX(-50%) translateY(0);
-        }
-        50% {
-            transform: translateX(-50%) translateY(-5px);
-        }
-    }
-
-    .name {
+    .hello {
+        padding-top: 6rem;
         position: absolute;
         top: 0;
         left: 0;
-        /*width: 100%;*/
-        height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         padding-left: 2rem;
         padding-right: 2rem;
     }
 
+    .name {
+        color: var(--accent-1);
+        /*text-decoration: underline;*/
+    }
+
+    .name:hover {
+        text-shadow: 0 0 0.5rem var(--accent-1);
+    }
+
+    @media (max-width: 768px) {
+        .hello {
+            padding-top: 12rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+    }
+
     h1 {
         text-align: left;
-        font-size: clamp(4rem, 15vw, 12rem);
+        font-size: min(15vw, 22vh);
+        /*font-size: 20vh;*/
         margin: 0;
         line-height: 0.9;
         width: 100%;
