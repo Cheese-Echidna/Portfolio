@@ -2,7 +2,7 @@
     import {dateFilename} from "$lib/datetime";
 
     let container: HTMLElement | undefined = $state();
-    import init, {start} from "/wasm/wallpaper/wallpaper_wasm.js?url";
+    import init, {start} from "./wallpaper_wasm";
 
     $effect(async () => {
         if (!container) return;
@@ -21,4 +21,4 @@
     You can find the source <a href="https://github.com/Cheese-Echidna/SemiCircles">here</a>.
 </p>
 
-<span class="wallpaper" bind:this={container} style="display:none;"></span>
+<span bind:this={container} style="display:none;"></span>

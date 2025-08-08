@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {page} from "$app/state";
+    import { dev } from '$app/environment';
 
     let { children } = $props();
 
@@ -25,7 +26,11 @@
     })
     const page_name = $derived(page_button.name);
 
-    const title = $derived("Gabriel Garriock" + (page_name ? (" - " + page_name) : ""));
+    const title = $derived.by(() => {
+        let dev_part = dev ? "GG-DEV" : "Gabriel Garriock";
+        let page_part = page_name ? (" - " + page_name) : "";
+        return dev_part + page_part;
+    });
     
     function toggleMenu() {
         menuOpen = !menuOpen;
