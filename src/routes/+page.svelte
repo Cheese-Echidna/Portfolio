@@ -6,6 +6,9 @@
     let visible = $state(false);
 
     onMount(() => {visible = true;});
+
+    let pause = '⏸️';
+    let del = '◀️';
 </script>
 
 <div class="hello">
@@ -17,7 +20,7 @@
             <br>
             Welcome to
             <br>
-            my website.
+            my website.{pause.repeat(10)}{del}{pause.repeat(10)}!
         </h1>
     {/if}
 </div>

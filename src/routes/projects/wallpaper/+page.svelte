@@ -16,9 +16,26 @@
 <p>
     This project is for a wallpaper and screensaver for me.
     <br />
-    Please note that it will not work fully on iOS.
-    <br />
     You can find the source <a href="https://github.com/Cheese-Echidna/SemiCircles">here</a>.
 </p>
 
 <span bind:this={container} style="display:none;"></span>
+
+<style lang="css">
+    :global(canvas) {
+        width: 100% !important;
+        height: auto !important;
+        /*max-width: 100% !important;*/
+        max-height: 80vh !important;
+        display: block;
+        /*aspect-ratio: calc(9/16);*/
+    }
+
+    @media (min-width: 769px) {
+        :global(canvas) {
+            margin-left: 15% !important;
+            margin-right: 15% !important;
+            width: 70% !important;
+        }
+    }
+</style>

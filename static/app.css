@@ -52,19 +52,3 @@ body {
     margin: 0;
 }
 
-canvas {
-    width: 100% !important;
-    height: auto !important;
-    /*max-width: 100% !important;*/
-    max-height: 80vh !important;
-    display: block;
-    /*aspect-ratio: calc(9/16);*/
-}
-
-@media (min-width: 769px) {
-    canvas {
-        margin-left: 15% !important;
-        margin-right: 15% !important;
-        width: 70% !important;
-    }
-}

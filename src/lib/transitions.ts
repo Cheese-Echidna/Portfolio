@@ -7,16 +7,39 @@ export function typewriter(
         | { type: 'open'; tagName: string; attrs: string; html: string }
         | { type: 'close'; tagName: string; html: string }
         | { type: 'br'; html: string }
-        | { type: 'char'; char: string };
+        | { type: 'char'; char: string }
+        | { type: 'pause' }
+        | { type: 'backspace' };
 
     const tokens: Token[] = [];
 
+    function pushTextTokens(text: string) {
+        // Iterate code points to catch VS16 (U+FE0F) after our control glyphs
+        const cps = Array.from(text);
+        for (let i = 0; i < cps.length; i++) {
+            const ch = cps[i];
+
+            // Pause: U+23F8, optionally followed by U+FE0F
+            if (ch === '\u23F8') {
+                if (cps[i + 1] === '\uFE0F') i++;
+                tokens.push({ type: 'pause' });
+                continue;
+            }
+
+            // Backspace: U+25C0, optionally followed by U+FE0F
+            if (ch === '\u25C0') {
+                if (cps[i + 1] === '\uFE0F') i++;
+                tokens.push({ type: 'backspace' });
+                continue;
+            }
+
+            tokens.push({ type: 'char', char: ch });
+        }
+    }
+
     function walk(n: Node) {
         if (n.nodeType === Node.TEXT_NODE) {
-            const text = n.textContent || '';
-            for (const ch of text) {
-                tokens.push({ type: 'char', char: ch });
-            }
+            pushTextTokens(n.textContent || '');
         } else if (
             n.nodeType === Node.ELEMENT_NODE &&
             (n as Element).tagName === 'BR'
@@ -40,9 +63,16 @@ export function typewriter(
 
     Array.from(node.childNodes).forEach(n => walk(n));
 
-    // --- 2. Determine total “units” (chars + <br>s) ---
+    // --- 2. Determine total “units” (chars + <br>s + controls) ---
     const total = tokens.reduce(
-        (sum, t) => sum + (t.type === 'char' || t.type === 'br' ? 1 : 0),
+        (sum, t) =>
+            sum +
+            (t.type === 'char' ||
+            t.type === 'br' ||
+            t.type === 'pause' ||
+            t.type === 'backspace'
+                ? 1
+                : 0),
         0
     );
 
@@ -51,40 +81,77 @@ export function typewriter(
     return {
         duration,
         tick: (t: number) => {
-            let remaining = Math.trunc(total * t);
+            let unitsToProcess = Math.trunc(total * t);
 
             const out: string[] = [];
             const openStack: string[] = [];
+
+            // Track where visible pieces (chars or <br>) land in `out`,
+            // so backspace can remove them even after more HTML is added.
+            const visibleIdx: number[] = [];
+
+            const maybeBreak = () => unitsToProcess <= 0;
 
             for (const tok of tokens) {
                 if (tok.type === 'open') {
                     out.push(tok.html);
                     openStack.push(tok.tagName);
-                } else if (tok.type === 'close') {
-                    // only close if we have it open
+                    continue;
+                }
+
+                if (tok.type === 'close') {
                     if (openStack[openStack.length - 1] === tok.tagName) {
                         openStack.pop();
                         out.push(tok.html);
                     }
-                } else if (tok.type === 'br') {
-                    if (remaining > 0) {
-                        out.push(tok.html);
-                        remaining -= 1;
-                    } else {
-                        break;
+                    continue;
+                }
+
+                if (tok.type === 'br') {
+                    if (maybeBreak()) break;
+                    out.push(tok.html);
+                    visibleIdx.push(out.length - 1);
+                    unitsToProcess -= 1;
+                    if (maybeBreak()) break;
+                    continue;
+                }
+
+                if (tok.type === 'pause') {
+                    if (maybeBreak()) break;
+                    // consume time, no output
+                    unitsToProcess -= 1;
+                    if (maybeBreak()) break;
+                    continue;
+                }
+
+                if (tok.type === 'backspace') {
+                    if (maybeBreak()) break;
+                    // consume time, remove last visible (char or <br>) if any
+                    const idx = visibleIdx.pop();
+                    if (idx != null) {
+                        out.splice(idx, 1);
+                        // fix stored indices beyond the removed slot
+                        for (let i = 0; i < visibleIdx.length; i++) {
+                            if (visibleIdx[i] > idx) visibleIdx[i] -= 1;
+                        }
                     }
-                } else if (tok.type === 'char') {
-                    if (remaining > 0) {
-                        // escape HTML chars
-                        const esc = tok.char
-                            .replace(/&/g, '&amp;')
-                            .replace(/</g, '&lt;')
-                            .replace(/>/g, '&gt;');
-                        out.push(esc);
-                        remaining -= 1;
-                    } else {
-                        break;
-                    }
+                    unitsToProcess -= 1;
+                    if (maybeBreak()) break;
+                    continue;
+                }
+
+                // normal character
+                if (tok.type === 'char') {
+                    if (maybeBreak()) break;
+                    const esc = tok.char
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    out.push(esc);
+                    visibleIdx.push(out.length - 1);
+                    unitsToProcess -= 1;
+                    if (maybeBreak()) break;
+                    continue;
                 }
             }
 

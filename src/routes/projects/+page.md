@@ -3,14 +3,14 @@ Projects todo:
 - [ ] Naughts and crosses
 - [ ] Sudoku
 - Generative Art
-    - [ ] Floob
+    - [x] [Bounce](/projects/bounce)
     - [ ] Geo
     - [ ] LSystem
-    - [ ] [papero](/blog/papero) 
-    - [ ] pendulum
+    - [x] [papero](/blog/papero) 
+    - [ ] pendulum (maybe make a new one where you can drag the pendulum itself)
     - [ ] raster
     - [ ] ray
-    - [ ] [wallpaper](/projects/wallpaper)
+    - [x] [wallpaper](/projects/wallpaper)
 - [ ] Dashboard
 
 ``` rust
