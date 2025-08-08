@@ -1,0 +1,14 @@
+{
+  "name": "wallpaper",
+  "version": "0.1.0",
+  "files": [
+    "wallpaper_wasm_bg.wasm",
+    "wallpaper_wasm.js",
+    "wallpaper_wasm.d.ts"
+  ],
+  "module": "wallpaper_wasm.js",
+  "types": "wallpaper_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

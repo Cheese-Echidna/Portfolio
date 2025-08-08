@@ -47,3 +47,12 @@ button:hover, button.selected, a {
         word-break: break-word;
     }
 }
+
+canvas {
+    width: 100% !important;
+    max-height: 100vh !important;
+}
+
+body {
+    margin: 0;
+}
