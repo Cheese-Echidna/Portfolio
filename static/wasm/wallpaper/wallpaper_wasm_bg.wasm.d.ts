@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
-export const main_web: () => void;
+export const start: (a: number, b: number) => any;
 export const wgpu_compute_pass_set_bind_group: (a: number, b: number, c: bigint, d: number, e: number) => void;
 export const wgpu_compute_pass_set_pipeline: (a: number, b: bigint) => void;
 export const wgpu_compute_pass_set_push_constant: (a: number, b: number, c: number, d: number) => void;
@@ -54,5 +54,6 @@ export const __wbindgen_malloc: (a: number, b: number) => number;
 export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
 export const __wbindgen_export_5: WebAssembly.Table;
 export const _dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hc6999254e8d95550: (a: number, b: number) => void;
-export const closure168_externref_shim: (a: number, b: number, c: any) => void;
+export const closure163_externref_shim: (a: number, b: number, c: any) => void;
+export const closure36_externref_shim: (a: number, b: number, c: any, d: any) => void;
 export const __wbindgen_start: () => void;

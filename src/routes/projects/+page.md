@@ -10,7 +10,7 @@ Projects todo:
     - [ ] pendulum
     - [ ] raster
     - [ ] ray
-    - [ ] wallpaper
+    - [ ] [wallpaper](/projects/wallpaper)
 - [ ] Dashboard
 
 ``` rust

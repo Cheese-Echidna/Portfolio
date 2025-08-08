@@ -24,6 +24,7 @@
         selected: true,
     })
     const page_name = $derived(page_button.name);
+
     const title = $derived("Gabriel Garriock" + (page_name ? (" - " + page_name) : ""));
     
     function toggleMenu() {

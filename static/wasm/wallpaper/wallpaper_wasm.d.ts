@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-export function main_web(): Promise<void>;
+export function start(width: number, height: number): Promise<void>;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly main_web: () => void;
+  readonly start: (a: number, b: number) => any;
   readonly wgpu_compute_pass_set_bind_group: (a: number, b: number, c: bigint, d: number, e: number) => void;
   readonly wgpu_compute_pass_set_pipeline: (a: number, b: bigint) => void;
   readonly wgpu_compute_pass_set_push_constant: (a: number, b: number, c: number, d: number) => void;
@@ -59,7 +59,8 @@ export interface InitOutput {
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_export_5: WebAssembly.Table;
   readonly _dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hc6999254e8d95550: (a: number, b: number) => void;
-  readonly closure168_externref_shim: (a: number, b: number, c: any) => void;
+  readonly closure163_externref_shim: (a: number, b: number, c: any) => void;
+  readonly closure36_externref_shim: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_start: () => void;
 }
 

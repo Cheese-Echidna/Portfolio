@@ -1,15 +1,24 @@
-<script>
-    // Svelte 5: run on the client after mount
+<script lang="ts">
+    import {dateFilename} from "$lib/datetime";
+
+    let container: HTMLElement | undefined = $state();
+    import init, {start} from "/wasm/wallpaper/wallpaper_wasm.js?url";
+
     $effect(async () => {
-        // Option A: import the JS glue from /static
-        const init = (await import('/wasm/wallpaper/wallpaper_wasm.js?url')).default;
-
-        // Most wasm-bindgen glue can find the .wasm automatically if it sits next to the .js.
-        // If your build expects the .wasm URL explicitly, pass it in:
-        // const wasmUrl = asset('wasm/wallpaper_wasm_bg.wasm'); // resolves correctly with base/assets
-        // await init(wasmUrl);
-
+        if (!container) return;
         await init();
-        console.log('WASM module initialized!');
+        start(1920, 1080);
+        // container.appendChild(canvas);
+        console.log("Appended");
     });
 </script>
+
+<p>
+    This project is for a wallpaper and screensaver for me.
+    <br />
+    Please note that it will not work fully on iOS.
+    <br />
+    You can find the source <a href="https://github.com/Cheese-Echidna/SemiCircles">here</a>.
+</p>
+
+<span class="wallpaper" bind:this={container} style="display:none;"></span>
