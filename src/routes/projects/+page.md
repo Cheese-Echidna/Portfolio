@@ -7,7 +7,7 @@ Projects todo:
     - [ ] Geo
     - [ ] LSystem
     - [x] [papero](/blog/papero) 
-    - [ ] pendulum (maybe make a new one where you can drag the pendulum itself)
+    - [ ] [pendulum](/projects/pendulums)
     - [ ] raster
     - [ ] ray
     - [x] [wallpaper](/projects/wallpaper)

@@ -39,6 +39,8 @@
 <svelte:window bind:innerWidth={w} bind:innerHeight={h} />
 
 <p>
+    This bouncing ball simulation is written in Rust with Nannou and compiled to WASM.
+    <br>
     Controls: Scroll to change size, left click and drag to launch, right click to remove
     <br>
     You can find the source <a href="https://github.com/Cheese-Echidna/floob">here</a>.
