@@ -11,5 +11,6 @@ Projects todo:
     - [ ] raster
     - [ ] ray
     - [x] [wallpaper](/projects/wallpaper)
+- [x] [Sorting](/projects/sorting)
 - [ ] Dashboard
 

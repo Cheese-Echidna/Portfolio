@@ -18,7 +18,7 @@
         removeAll();
         init().then(() => {
             if (!w || !h) return;
-            start(w - 35, h - 200);
+            start(w - 5, h - 200);
             console.log("Started");
         });
         return removeAll;
@@ -47,10 +47,10 @@
 
 <style lang="css">
     :global(canvas) {
-        width: 100% !important;
-        height: auto !important;
+        /*width: 100% !important;*/
+        /*height: auto !important;*/
         /*max-width: 100% !important;*/
-        max-height: 80vh !important;
+        /*max-height: 80vh !important;*/
         display: block;
         /*aspect-ratio: calc(9/16);*/
     }
