@@ -7,17 +7,9 @@ Projects todo:
     - [ ] Geo
     - [ ] LSystem
     - [x] [papero](/blog/papero) 
-    - [ ] [pendulum](/projects/pendulums)
+    - [x] [pendulum](/projects/pendulums)
     - [ ] raster
     - [ ] ray
     - [x] [wallpaper](/projects/wallpaper)
 - [ ] Dashboard
 
-``` rust
-fn main() -> Option<()> {
-    println!("Hello blog");
-}
-```
-
-
-Here is some `inline code` yay.
