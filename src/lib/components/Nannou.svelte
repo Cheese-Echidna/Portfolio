@@ -5,18 +5,23 @@
     let h: number | undefined = $state();
 
     let container: HTMLElement | undefined = $state();
-    let {init, start, fullscreen_button = false} = $props();
+    let {init, start} = $props();
 
-    $effect(() => {
-        if (!container || !w || !h) return;
+    function removeAll() {
         for (let canvas of document.getElementsByTagName('canvas')) {
             canvas.remove()
         }
+    }
+
+    $effect(() => {
+        if (!container || !w || !h) return;
+        removeAll();
         init().then(() => {
             if (!w || !h) return;
             start(w - 35, h - 200);
             console.log("Started");
         });
+        return removeAll;
     });
 
     $effect(() => {
