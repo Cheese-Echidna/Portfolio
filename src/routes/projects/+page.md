@@ -4,7 +4,7 @@ Projects todo:
 - [ ] Sudoku
 - Generative Art
     - [x] [Bounce](/projects/bounce)
-    - [ ] Geo
+    - [x] [Geo](/projects/geo)
     - [ ] LSystem
     - [x] [papero](/blog/papero) 
     - [x] [pendulum](/projects/pendulums)
