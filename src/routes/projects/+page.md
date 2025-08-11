@@ -5,7 +5,7 @@ Projects todo:
 - Generative Art
     - [x] [Bounce](/projects/bounce)
     - [x] [Geo](/projects/geo)
-    - [ ] LSystem
+    - [ ] ~~LSystem~~
     - [x] [papero](/blog/papero) 
     - [x] [pendulum](/projects/pendulums)
     - [ ] raster

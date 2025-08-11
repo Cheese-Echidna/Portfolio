@@ -51,7 +51,7 @@
         /*height: auto !important;*/
         /*max-width: 100% !important;*/
         /*max-height: 80vh !important;*/
-        display: block;
         /*aspect-ratio: calc(9/16);*/
+        display: block;
     }
 </style>
