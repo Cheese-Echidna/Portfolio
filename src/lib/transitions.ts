@@ -1,6 +1,10 @@
 export function typewriter(
     node: Element,
-    { speed = 1 }: { speed?: number } = {}
+    {
+        speed = 1,
+        cursor = 'bar' as 'bar' | 'block' | 'none',
+        blinkMs = 700
+    } = {}
 ) {
     // --- 1. Build a flat token list from the DOM, splitting text into chars ---
     type Token =
@@ -14,25 +18,20 @@ export function typewriter(
     const tokens: Token[] = [];
 
     function pushTextTokens(text: string) {
-        // Iterate code points to catch VS16 (U+FE0F) after our control glyphs
         const cps = Array.from(text);
         for (let i = 0; i < cps.length; i++) {
             const ch = cps[i];
 
-            // Pause: U+23F8, optionally followed by U+FE0F
-            if (ch === '\u23F8') {
+            if (ch === '\u23F8') { // ⏸ pause (may be followed by VS16)
                 if (cps[i + 1] === '\uFE0F') i++;
                 tokens.push({ type: 'pause' });
                 continue;
             }
-
-            // Backspace: U+25C0, optionally followed by U+FE0F
-            if (ch === '\u25C0') {
+            if (ch === '\u25C0') { // ◀ backspace (may be followed by VS16)
                 if (cps[i + 1] === '\uFE0F') i++;
                 tokens.push({ type: 'backspace' });
                 continue;
             }
-
             tokens.push({ type: 'char', char: ch });
         }
     }
@@ -48,7 +47,6 @@ export function typewriter(
         } else if (n.nodeType === Node.ELEMENT_NODE) {
             const el = n as Element;
             const tag = el.tagName.toLowerCase();
-            // reconstruct attribute string
             const attrs = Array.from(el.attributes)
                 .map(a => `${a.name}="${a.value}"`)
                 .join(' ');
@@ -78,16 +76,17 @@ export function typewriter(
 
     const duration = total / (speed * 0.01);
 
+    // Track previous processed units so we can know if we’re "typing" right now
+    let prevProcessed = -1;
+
     return {
         duration,
         tick: (t: number) => {
             let unitsToProcess = Math.trunc(total * t);
+            const processed = unitsToProcess; // how many units we’ll output this frame
 
             const out: string[] = [];
             const openStack: string[] = [];
-
-            // Track where visible pieces (chars or <br>) land in `out`,
-            // so backspace can remove them even after more HTML is added.
             const visibleIdx: number[] = [];
 
             const maybeBreak = () => unitsToProcess <= 0;
@@ -118,19 +117,16 @@ export function typewriter(
 
                 if (tok.type === 'pause') {
                     if (maybeBreak()) break;
-                    // consume time, no output
-                    unitsToProcess -= 1;
+                    unitsToProcess -= 1; // consume time, no output
                     if (maybeBreak()) break;
                     continue;
                 }
 
                 if (tok.type === 'backspace') {
                     if (maybeBreak()) break;
-                    // consume time, remove last visible (char or <br>) if any
                     const idx = visibleIdx.pop();
                     if (idx != null) {
                         out.splice(idx, 1);
-                        // fix stored indices beyond the removed slot
                         for (let i = 0; i < visibleIdx.length; i++) {
                             if (visibleIdx[i] > idx) visibleIdx[i] -= 1;
                         }
@@ -140,7 +136,6 @@ export function typewriter(
                     continue;
                 }
 
-                // normal character
                 if (tok.type === 'char') {
                     if (maybeBreak()) break;
                     const esc = tok.char
@@ -155,12 +150,32 @@ export function typewriter(
                 }
             }
 
+            // ----- Caret injection -----
+            const isDone = processed >= total;
+
+            if (cursor !== 'none' && !isDone) {
+                // blink only when idle between keystrokes
+                const isTyping = processed > prevProcessed;
+
+                const classes = [
+                    'tw-caret',
+                    cursor === 'bar' ? 'tw-caret--bar' : 'tw-caret--block',
+                    isTyping ? 'tw-caret--typing' : ''
+                ].filter(Boolean).join(' ');
+
+                out.push(
+                    `<span class="${classes}" aria-hidden="true" style="--tw-caret-blink:${blinkMs}ms"></span>`
+                );
+            }
+
+
             // close any still-open tags
             while (openStack.length > 0) {
                 const tag = openStack.pop()!;
                 out.push(`</${tag}>`);
             }
 
+            prevProcessed = processed;
             node.innerHTML = out.join('');
         }
     };

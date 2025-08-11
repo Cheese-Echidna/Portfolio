@@ -1,6 +1,6 @@
 Projects todo:
 
-- [ ] Naughts and crosses
+- [ ] Naughts and crosses (Not working)
 - [ ] Sudoku
 - Generative Art
     - [x] [Bounce](/projects/bounce)

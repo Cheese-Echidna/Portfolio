@@ -1,6 +1,6 @@
 :root {
     --accent-1: #fd9112;
-    --accent-2: #fd666e;
+    --accent-2: #ff5e62;
     --bg: #141414;
     --accent-white: #ebebeb;
     --text: var(--accent-white);
@@ -52,3 +52,46 @@ body {
     margin: 0;
 }
 
+
+/* Blink */
+@keyframes tw-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+/* Base caret */
+.tw-caret {
+    display: inline-block;
+    vertical-align: baseline;
+    background: currentColor;
+    /* keep blinking even after transition stops */
+    animation: tw-blink 800ms steps(1, end) infinite;
+    pointer-events: none;
+    /* avoid layout jumps in some fonts */
+    line-height: 1;
+}
+
+/* Vertical bar caret */
+.tw-caret--bar {
+    width: 1.5px;
+    height: 0.7em;
+    transform: translateY(0.1ex); /* align with text baseline a touch */
+}
+
+/* Block caret */
+.tw-caret--block {
+    width: 0.6ch;
+    height: 0.8em;
+    opacity: 0.9; /* slightly translucent so text behind would be readable if any */
+}
+
+/* Pause blinking while typing */
+.tw-caret--typing {
+    animation-play-state: paused;
+    opacity: 1; /* make it solid during typing */
+}
+
+/* Respect user motion prefs */
+@media (prefers-reduced-motion: reduce) {
+    .tw-caret { animation: none; }
+}

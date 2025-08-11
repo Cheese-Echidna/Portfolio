@@ -2,7 +2,7 @@
 	import {page} from "$app/state";
     import { dev } from '$app/environment';
 
-    let { children } = $props();
+    let { children, data } = $props();
 
     let menuOpen = $state(false);
 
@@ -98,7 +98,20 @@
     {@render children?.()}
 </div>
 
+<!--<footer>-->
+<!--    {#if data.commit?.url}-->
+<!--        <a href={data.commit.url} rel="noopener noreferrer">#{data.commit.short}</a>-->
+<!--    {:else}-->
+<!--        <span>local dev</span>-->
+<!--    {/if}-->
+<!--</footer>-->
+
 <style lang="css">
+    /*footer {*/
+    /*    width: 100%;*/
+    /*    height:10%;*/
+    /*}*/
+
 
     .content {
         margin-left: 15%;
