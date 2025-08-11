@@ -15,7 +15,8 @@
     {#if visible}
         <h1 class="hero-title" in:typewriter={{ speed: 1.6, cursor: 'bar' }}>
             <span class="line">Hi, I'm <span class="name">Gabriel</span>.</span>
-            <span class="line">Welcome to my<br />website!</span>
+            <span class="line">Welcome to my</span>
+            <span class="line">website!</span>
         </h1>
     {/if}
 </div>

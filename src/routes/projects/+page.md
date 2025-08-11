@@ -1,4 +1,4 @@
-Projects todo:
+# Projects
 
 - [ ] Naughts and crosses (Not working)
 - [ ] Sudoku

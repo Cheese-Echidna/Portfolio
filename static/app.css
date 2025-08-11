@@ -1,18 +1,39 @@
 :root {
     --accent-1: #fd9112;
     --accent-2: #ff5e62;
-    --bg: #141414;
-    --accent-white: #ebebeb;
-    --text: var(--accent-white);
+    /* --accent-white: ; */
+
+    /* base colors */
+    --bg-base: #141414;
+    --text-base: #ebebeb;
+
+    /* mapped tokens used throughout the app */
+    --bg: var(--bg-base);
+    --text: var(--text-base);
+
+    color-scheme: light dark;
     background-color: var(--bg);
     font-family: Nunito, sans-serif;
     font-size: 1.2rem;
     color: var(--text);
 }
 
+/* In dark-mode preference, swap background and text tokens */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: var(--text-base);
+        --text: var(--bg-base);
+    }
+}
+
 h1, nav div button {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: bold;
+    /* font-size: 4rem; */
+}
+
+h1 {
+    font-size: 3rem;
 }
 
 h2, h3, h4, h5, h6 {
@@ -94,4 +115,20 @@ body {
 /* Respect user motion prefs */
 @media (prefers-reduced-motion: reduce) {
     .tw-caret { animation: none; }
+}
+
+/* Utility: gradient text using accent colors */
+h1:not(:has(span)) {
+    background-image: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent; /* Safari */
+    display: inline-block;
+}
+
+/* Spacing for all direct children inside .content */
+.content > * {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }
