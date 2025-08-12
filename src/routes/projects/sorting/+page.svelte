@@ -7,4 +7,4 @@
     (Unfortunately I couldn't get the sounds to work)
 </p>
 
-<Nannou {init} {start}/>
+<Nannou {init} {start} num_lines_text={1}/>

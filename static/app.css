@@ -14,9 +14,16 @@
     color-scheme: light dark;
     background-color: var(--bg);
     font-family: Nunito, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--text);
 }
+
+/* Spacing for all direct children inside .content */
+.content > * {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
 
 /* In dark-mode preference, swap background and text tokens */
 @media (prefers-color-scheme: light) {
@@ -36,9 +43,10 @@ h1 {
     font-size: 3rem;
 }
 
-h2, h3, h4, h5, h6 {
+h2, h3, h4 {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: normal;
+    margin-top: 1rem !important; 
 }
 
 code {
@@ -125,10 +133,4 @@ h1:not(:has(span)) {
     color: transparent;
     -webkit-text-fill-color: transparent; /* Safari */
     display: inline-block;
-}
-
-/* Spacing for all direct children inside .content */
-.content > * {
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
 }

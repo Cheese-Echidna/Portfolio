@@ -5,7 +5,7 @@
     let h: number | undefined = $state();
 
     let container: HTMLElement | undefined = $state();
-    let {init, start} = $props();
+    let {init, start, num_lines_text=3} = $props();
 
     function removeAll() {
         for (let canvas of document.getElementsByTagName('canvas')) {
@@ -18,7 +18,7 @@
         removeAll();
         init().then(() => {
             if (!w || !h) return;
-            start(w - 5, h - 200);
+            start(w - 5, h - 25 - 83 - 26 * num_lines_text);
             console.log("Started");
         });
         return removeAll;

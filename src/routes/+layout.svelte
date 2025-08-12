@@ -99,44 +99,13 @@
     {@render children?.()}
 </div>
 
-<!-- {#if page.url.pathname !== '/'}
-   <footer>
-   {#if data.commit?.url}
-       <a href={data.commit.url} rel="noopener noreferrer">Built from commit #{data.commit.short}</a>
-   {:else}
-       <span>Running in local dev</span>
-   {/if}
-   </footer>
-{/if} -->
-
-<!-- </div> -->
-
 <style lang="css">
-    /* .page {
-        min-height: 100vh;
-        display: flex;
-        flegx-direction: column;
-    } */
-
     .content {
         margin-left: 15%;
         margin-right: 15%;
         width: 70%;
         padding-top: 4.5rem;
     }
-
-    /* footer {
-        width: 100%;
-        padding: 0.7rem 0 0.7rem 0;
-        border-top: 2px solid var(--text);
-        text-align: center;
-        margin-top: auto;
-    } */
-    /* footer {
-        margin-left: 4%;
-        margin-right: 4%;
-        width: 92%;
-    } */
 
     nav {
         position: fixed;
