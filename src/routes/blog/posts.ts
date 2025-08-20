@@ -1,11 +1,11 @@
 export const posts = [
-    {
-        "title": "Blog Post No. 1",
-        "summary": "A test blog post.",
-        "date": 1754460955898,
-        "author": "Gabriel Garriock",
-        "slug": "first"
-    },
+    // {
+    //     "title": "Raytracing in Rust",
+    //     "summary": "CPU ray(path) tracing in Rust.",
+    //     "date": 1754954643332,
+    //     "author": "Gabriel Garriock",
+    //     "slug": "ray"
+    // },
     {
         "title": "Papero",
         "summary": "The first, the one, the only.",

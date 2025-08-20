@@ -13,4 +13,4 @@
     - [x] [wallpaper](/projects/wallpaper)
 - [x] [Sorting](/projects/sorting)
 - [ ] Dashboard
-
+- [x] [Historical currency converter](/projects/converter)
